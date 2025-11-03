@@ -390,3 +390,31 @@ export async function deleteUser(userId: number) {
   // Delete user
   await db.delete(users).where(eq(users.id, userId));
 }
+
+
+// ============= ADMIN AUTH OPERATIONS =============
+
+export async function createAdminUser(email: string, passwordHash: string, name: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const result = await db.insert(users).values({
+    email,
+    passwordHash,
+    name,
+    role: 'admin',
+    userType: 'admin',
+    loginMethod: 'email',
+    openId: `admin-${Date.now()}-${Math.random().toString(36).substring(7)}`,
+  });
+
+  return result;
+}
+
+export async function getUserByEmail(email: string) {
+  const db = await getDb();
+  if (!db) return undefined;
+
+  const result = await db.select().from(users).where(eq(users.email, email)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}

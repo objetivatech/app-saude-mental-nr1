@@ -1,6 +1,8 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
+import AdminLogin from "@/pages/admin/AdminLogin";
+import AdminRegister from "@/pages/admin/AdminRegister";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
@@ -18,8 +20,10 @@ import UserManagement from "./pages/admin/UserManagement";
 function Router() {
   return (
     <Switch>
-      <Route path={"/"} component={Home} />
-      <Route path={"/select-user-type"} component={SelectUserType} />
+       <Route path={"/"} component={Home} />
+      <Route path="/admin/login" component={AdminLogin} />
+      <Route path="/admin/register" component={AdminRegister} />
+      <Route path="/select-user-type" component={SelectUserType} />
       
       {/* Company Routes */}
       <Route path={"/company/register"} component={RegisterCompany} />

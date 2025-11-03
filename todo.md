@@ -61,3 +61,13 @@
 - [x] Criar guia de configuração do R2 Storage
 - [x] Criar arquivo wrangler.toml
 - [x] Documentar processo completo de deploy
+
+
+## Nova Funcionalidade - Autenticação Admin Independente
+- [x] Adicionar campo de senha ao schema de users
+- [x] Criar API de registro de admin com email/senha
+- [x] Criar API de login com email/senha  
+- [x] Criar tela de login admin separada
+- [x] Implementar hash de senha com scrypt (Node.js nativo)
+- [x] Criar sistema de sessão JWT para admins
+- [x] Testar fluxo completo de login admin

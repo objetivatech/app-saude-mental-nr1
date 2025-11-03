@@ -48,6 +48,76 @@ export const appRouter = router({
         await db.updateUserType(ctx.user.id, input.userType);
         return { success: true };
       }),
+    
+    // Admin authentication with email/password
+    registerAdmin: publicProcedure
+      .input(z.object({
+        email: z.string().email(),
+        password: z.string().min(8),
+        name: z.string().min(1),
+        secretKey: z.string(), // Secret key to prevent unauthorized admin registration
+      }))
+      .mutation(async ({ ctx, input }) => {
+        // Verify secret key (should be set in environment)
+        if (input.secretKey !== process.env.ADMIN_REGISTRATION_SECRET) {
+          throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid secret key' });
+        }
+
+        // Check if email already exists
+        const existing = await db.getUserByEmail(input.email);
+        if (existing) {
+          throw new TRPCError({ code: 'BAD_REQUEST', message: 'Email already registered' });
+        }
+
+        // Hash password and create admin user
+        const { hashPassword } = await import('./auth');
+        const passwordHash = hashPassword(input.password);
+        await db.createAdminUser(input.email, passwordHash, input.name);
+
+        return { success: true, message: 'Admin user created successfully' };
+      }),
+
+    loginAdmin: publicProcedure
+      .input(z.object({
+        email: z.string().email(),
+        password: z.string(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        // Get user by email
+        const user = await db.getUserByEmail(input.email);
+        if (!user || !user.passwordHash) {
+          throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid credentials' });
+        }
+
+        // Verify password
+        const { verifyPassword } = await import('./auth');
+        const isValid = verifyPassword(input.password, user.passwordHash);
+        if (!isValid) {
+          throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid credentials' });
+        }
+
+        // Check if user is admin
+        if (user.role !== 'admin') {
+          throw new TRPCError({ code: 'FORBIDDEN', message: 'Admin access required' });
+        }
+
+        // Create session (reuse existing OAuth session logic)
+        const { signJWT } = await import('./_core/jwt');
+        const token = await signJWT({ openId: user.openId! });
+        const cookieOptions = getSessionCookieOptions(ctx.req);
+        ctx.res.cookie(COOKIE_NAME, token, cookieOptions);
+
+        return { 
+          success: true, 
+          user: {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            role: user.role,
+            userType: user.userType,
+          }
+        };
+      }),
   }),
 
   // ============= COMPANY ROUTES =============
