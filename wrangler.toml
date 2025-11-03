@@ -1,18 +1,18 @@
 name = "saude-corporativa"
 compatibility_date = "2025-01-01"
-main = "server/index.js"
+pages_build_output_dir = "dist"
 
 # Configuração do D1 Database
 [[d1_databases]]
 binding = "DB"
 database_name = "saude-corporativa-db"
-database_id = "e4c60c74-d3b4-4253-afa0-33ac3242d5da"
+database_id = "YOUR_DATABASE_ID_HERE"
 
 # Configuração do R2 Storage
 [[r2_buckets]]
 binding = "FILES"
 bucket_name = "saude-corporativa-files"
 
-# Variáveis de Ambiente
+# Variáveis de Ambiente (não-secretas)
 [vars]
 NODE_ENV = "production"
