@@ -1,7 +1,7 @@
 {
-  "version": "5",
-  "dialect": "mysql",
-  "id": "61b38385-bef5-4dde-ab7d-79925b6d0e53",
+  "version": "6",
+  "dialect": "sqlite",
+  "id": "6e87ed68-155d-4933-83b3-75caab3645fb",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "companies": {
@@ -9,56 +9,56 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "int",
-          "primaryKey": false,
+          "type": "integer",
+          "primaryKey": true,
           "notNull": true,
           "autoincrement": true
         },
         "userId": {
           "name": "userId",
-          "type": "int",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
         "companyName": {
           "name": "companyName",
-          "type": "varchar(255)",
+          "type": "text(255)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
         "cnpj": {
           "name": "cnpj",
-          "type": "varchar(18)",
+          "type": "text(18)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
         "contactEmail": {
           "name": "contactEmail",
-          "type": "varchar(320)",
+          "type": "text(320)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
         "contactPhone": {
           "name": "contactPhone",
-          "type": "varchar(20)",
+          "type": "text(20)",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         },
         "planId": {
           "name": "planId",
-          "type": "int",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         },
         "approved": {
           "name": "approved",
-          "type": "boolean",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
@@ -66,23 +66,28 @@
         },
         "createdAt": {
           "name": "createdAt",
-          "type": "timestamp",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
-          "default": "(now())"
+          "autoincrement": false
         },
         "updatedAt": {
           "name": "updatedAt",
-          "type": "timestamp",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
-          "onUpdate": true,
-          "default": "(now())"
+          "autoincrement": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "companies_cnpj_unique": {
+          "name": "companies_cnpj_unique",
+          "columns": [
+            "cnpj"
+          ],
+          "isUnique": true
+        }
+      },
       "foreignKeys": {
         "companies_userId_users_id_fk": {
           "name": "companies_userId_users_id_fk",
@@ -111,44 +116,30 @@
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {
-        "companies_id": {
-          "name": "companies_id",
-          "columns": [
-            "id"
-          ]
-        }
-      },
-      "uniqueConstraints": {
-        "companies_cnpj_unique": {
-          "name": "companies_cnpj_unique",
-          "columns": [
-            "cnpj"
-          ]
-        }
-      },
-      "checkConstraint": {}
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "educationalContents": {
       "name": "educationalContents",
       "columns": {
         "id": {
           "name": "id",
-          "type": "int",
-          "primaryKey": false,
+          "type": "integer",
+          "primaryKey": true,
           "notNull": true,
           "autoincrement": true
         },
         "title": {
           "name": "title",
-          "type": "varchar(255)",
+          "type": "text(255)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
         "contentType": {
           "name": "contentType",
-          "type": "enum('article','video','podcast','infographic','guide')",
+          "type": "text",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
@@ -162,21 +153,21 @@
         },
         "contentUrl": {
           "name": "contentUrl",
-          "type": "varchar(500)",
+          "type": "text(500)",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         },
         "thumbnailUrl": {
           "name": "thumbnailUrl",
-          "type": "varchar(500)",
+          "type": "text(500)",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         },
         "published": {
           "name": "published",
-          "type": "boolean",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
@@ -184,103 +175,90 @@
         },
         "createdAt": {
           "name": "createdAt",
-          "type": "timestamp",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
-          "default": "(now())"
+          "autoincrement": false
         },
         "updatedAt": {
           "name": "updatedAt",
-          "type": "timestamp",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
-          "onUpdate": true,
-          "default": "(now())"
+          "autoincrement": false
         }
       },
       "indexes": {},
       "foreignKeys": {},
-      "compositePrimaryKeys": {
-        "educationalContents_id": {
-          "name": "educationalContents_id",
-          "columns": [
-            "id"
-          ]
-        }
-      },
+      "compositePrimaryKeys": {},
       "uniqueConstraints": {},
-      "checkConstraint": {}
+      "checkConstraints": {}
     },
     "employees": {
       "name": "employees",
       "columns": {
         "id": {
           "name": "id",
-          "type": "int",
-          "primaryKey": false,
+          "type": "integer",
+          "primaryKey": true,
           "notNull": true,
           "autoincrement": true
         },
         "userId": {
           "name": "userId",
-          "type": "int",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
         "companyId": {
           "name": "companyId",
-          "type": "int",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
         "employeeName": {
           "name": "employeeName",
-          "type": "varchar(255)",
+          "type": "text(255)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
         "employeeEmail": {
           "name": "employeeEmail",
-          "type": "varchar(320)",
+          "type": "text(320)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
         "department": {
           "name": "department",
-          "type": "varchar(100)",
+          "type": "text(100)",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         },
         "position": {
           "name": "position",
-          "type": "varchar(100)",
+          "type": "text(100)",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         },
         "createdAt": {
           "name": "createdAt",
-          "type": "timestamp",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
-          "default": "(now())"
+          "autoincrement": false
         },
         "updatedAt": {
           "name": "updatedAt",
-          "type": "timestamp",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
-          "onUpdate": true,
-          "default": "(now())"
+          "autoincrement": false
         }
       },
       "indexes": {},
@@ -312,65 +290,58 @@
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {
-        "employees_id": {
-          "name": "employees_id",
-          "columns": [
-            "id"
-          ]
-        }
-      },
+      "compositePrimaryKeys": {},
       "uniqueConstraints": {},
-      "checkConstraint": {}
+      "checkConstraints": {}
     },
     "healthProfessionals": {
       "name": "healthProfessionals",
       "columns": {
         "id": {
           "name": "id",
-          "type": "int",
-          "primaryKey": false,
+          "type": "integer",
+          "primaryKey": true,
           "notNull": true,
           "autoincrement": true
         },
         "userId": {
           "name": "userId",
-          "type": "int",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
         "professionalName": {
           "name": "professionalName",
-          "type": "varchar(255)",
+          "type": "text(255)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
         "specialty": {
           "name": "specialty",
-          "type": "varchar(100)",
+          "type": "text(100)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
         "registrationNumber": {
           "name": "registrationNumber",
-          "type": "varchar(50)",
+          "type": "text(50)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
         "contactEmail": {
           "name": "contactEmail",
-          "type": "varchar(320)",
+          "type": "text(320)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
         "contactPhone": {
           "name": "contactPhone",
-          "type": "varchar(20)",
+          "type": "text(20)",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
@@ -384,7 +355,7 @@
         },
         "approved": {
           "name": "approved",
-          "type": "boolean",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
@@ -392,23 +363,28 @@
         },
         "createdAt": {
           "name": "createdAt",
-          "type": "timestamp",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
-          "default": "(now())"
+          "autoincrement": false
         },
         "updatedAt": {
           "name": "updatedAt",
-          "type": "timestamp",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
-          "onUpdate": true,
-          "default": "(now())"
+          "autoincrement": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "healthProfessionals_registrationNumber_unique": {
+          "name": "healthProfessionals_registrationNumber_unique",
+          "columns": [
+            "registrationNumber"
+          ],
+          "isUnique": true
+        }
+      },
       "foreignKeys": {
         "healthProfessionals_userId_users_id_fk": {
           "name": "healthProfessionals_userId_users_id_fk",
@@ -424,65 +400,51 @@
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {
-        "healthProfessionals_id": {
-          "name": "healthProfessionals_id",
-          "columns": [
-            "id"
-          ]
-        }
-      },
-      "uniqueConstraints": {
-        "healthProfessionals_registrationNumber_unique": {
-          "name": "healthProfessionals_registrationNumber_unique",
-          "columns": [
-            "registrationNumber"
-          ]
-        }
-      },
-      "checkConstraint": {}
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "plans": {
       "name": "plans",
       "columns": {
         "id": {
           "name": "id",
-          "type": "int",
-          "primaryKey": false,
+          "type": "integer",
+          "primaryKey": true,
           "notNull": true,
           "autoincrement": true
         },
         "planName": {
           "name": "planName",
-          "type": "varchar(100)",
+          "type": "text(100)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
         "planType": {
           "name": "planType",
-          "type": "enum('basic','professional','enterprise')",
+          "type": "text",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
         "price": {
           "name": "price",
-          "type": "int",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
         "billingPeriod": {
           "name": "billingPeriod",
-          "type": "enum('monthly','quarterly','yearly')",
+          "type": "text",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
         "maxEmployees": {
           "name": "maxEmployees",
-          "type": "int",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
@@ -496,7 +458,7 @@
         },
         "active": {
           "name": "active",
-          "type": "boolean",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
@@ -504,83 +466,73 @@
         },
         "createdAt": {
           "name": "createdAt",
-          "type": "timestamp",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
-          "default": "(now())"
+          "autoincrement": false
         },
         "updatedAt": {
           "name": "updatedAt",
-          "type": "timestamp",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
-          "onUpdate": true,
-          "default": "(now())"
+          "autoincrement": false
         }
       },
       "indexes": {},
       "foreignKeys": {},
-      "compositePrimaryKeys": {
-        "plans_id": {
-          "name": "plans_id",
-          "columns": [
-            "id"
-          ]
-        }
-      },
+      "compositePrimaryKeys": {},
       "uniqueConstraints": {},
-      "checkConstraint": {}
+      "checkConstraints": {}
     },
     "surveyResponses": {
       "name": "surveyResponses",
       "columns": {
         "id": {
           "name": "id",
-          "type": "int",
-          "primaryKey": false,
+          "type": "integer",
+          "primaryKey": true,
           "notNull": true,
           "autoincrement": true
         },
         "employeeId": {
           "name": "employeeId",
-          "type": "int",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
         "responseDate": {
           "name": "responseDate",
-          "type": "date",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
         "moodLevel": {
           "name": "moodLevel",
-          "type": "int",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
         "stressLevel": {
           "name": "stressLevel",
-          "type": "int",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
         "fatigueLevel": {
           "name": "fatigueLevel",
-          "type": "int",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
         "workSatisfaction": {
           "name": "workSatisfaction",
-          "type": "int",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
@@ -594,11 +546,10 @@
         },
         "createdAt": {
           "name": "createdAt",
-          "type": "timestamp",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
-          "default": "(now())"
+          "autoincrement": false
         }
       },
       "indexes": {},
@@ -617,30 +568,23 @@
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {
-        "surveyResponses_id": {
-          "name": "surveyResponses_id",
-          "columns": [
-            "id"
-          ]
-        }
-      },
+      "compositePrimaryKeys": {},
       "uniqueConstraints": {},
-      "checkConstraint": {}
+      "checkConstraints": {}
     },
     "users": {
       "name": "users",
       "columns": {
         "id": {
           "name": "id",
-          "type": "int",
-          "primaryKey": false,
+          "type": "integer",
+          "primaryKey": true,
           "notNull": true,
           "autoincrement": true
         },
         "openId": {
           "name": "openId",
-          "type": "varchar(64)",
+          "type": "text(64)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
@@ -654,21 +598,21 @@
         },
         "email": {
           "name": "email",
-          "type": "varchar(320)",
+          "type": "text(320)",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         },
         "loginMethod": {
           "name": "loginMethod",
-          "type": "varchar(64)",
+          "type": "text(64)",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         },
         "role": {
           "name": "role",
-          "type": "enum('user','admin')",
+          "type": "text",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
@@ -676,66 +620,56 @@
         },
         "userType": {
           "name": "userType",
-          "type": "enum('company','employee','health_professional','admin')",
+          "type": "text",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         },
         "createdAt": {
           "name": "createdAt",
-          "type": "timestamp",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
-          "default": "(now())"
+          "autoincrement": false
         },
         "updatedAt": {
           "name": "updatedAt",
-          "type": "timestamp",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
-          "onUpdate": true,
-          "default": "(now())"
+          "autoincrement": false
         },
         "lastSignedIn": {
           "name": "lastSignedIn",
-          "type": "timestamp",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
-          "default": "(now())"
+          "autoincrement": false
         }
       },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {
-        "users_id": {
-          "name": "users_id",
-          "columns": [
-            "id"
-          ]
-        }
-      },
-      "uniqueConstraints": {
+      "indexes": {
         "users_openId_unique": {
           "name": "users_openId_unique",
           "columns": [
             "openId"
-          ]
+          ],
+          "isUnique": true
         }
       },
-      "checkConstraint": {}
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     }
   },
   "views": {},
+  "enums": {},
   "_meta": {
     "schemas": {},
     "tables": {},
     "columns": {}
   },
   "internal": {
-    "tables": {},
     "indexes": {}
   }
 }

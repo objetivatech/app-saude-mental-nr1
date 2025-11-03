@@ -1,20 +1,20 @@
-import { int, mysqlEnum, mysqlTable, text, timestamp, varchar, boolean, date } from "drizzle-orm/mysql-core";
+import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
 
 /**
  * Core user table backing auth flow.
  * Extended with userType to support multiple user profiles.
  */
-export const users = mysqlTable("users", {
-  id: int("id").autoincrement().primaryKey(),
-  openId: varchar("openId", { length: 64 }).notNull().unique(),
+export const users = sqliteTable("users", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  openId: text("openId", { length: 64 }).notNull().unique(),
   name: text("name"),
-  email: varchar("email", { length: 320 }),
-  loginMethod: varchar("loginMethod", { length: 64 }),
-  role: mysqlEnum("role", ["user", "admin"]).default("user").notNull(),
-  userType: mysqlEnum("userType", ["company", "employee", "health_professional", "admin"]),
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-  lastSignedIn: timestamp("lastSignedIn").defaultNow().notNull(),
+  email: text("email", { length: 320 }),
+  loginMethod: text("loginMethod", { length: 64 }),
+  role: text("role").default("user").notNull(),
+  userType: text("userType"),
+  createdAt: integer("createdAt", { mode: "timestamp_ms" }).notNull().$defaultFn(() => Date.now()),
+  updatedAt: integer("updatedAt", { mode: "timestamp_ms" }).notNull().$defaultFn(() => Date.now()),
+  lastSignedIn: integer("lastSignedIn", { mode: "timestamp_ms" }).notNull().$defaultFn(() => Date.now()),
 });
 
 export type User = typeof users.$inferSelect;
@@ -23,17 +23,17 @@ export type InsertUser = typeof users.$inferInsert;
 /**
  * Companies table - stores company information
  */
-export const companies = mysqlTable("companies", {
-  id: int("id").autoincrement().primaryKey(),
-  userId: int("userId").notNull().references(() => users.id),
-  companyName: varchar("companyName", { length: 255 }).notNull(),
-  cnpj: varchar("cnpj", { length: 18 }).notNull().unique(),
-  contactEmail: varchar("contactEmail", { length: 320 }).notNull(),
-  contactPhone: varchar("contactPhone", { length: 20 }),
-  planId: int("planId").references(() => plans.id),
-  approved: boolean("approved").default(false).notNull(),
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+export const companies = sqliteTable("companies", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  userId: integer("userId").notNull().references(() => users.id),
+  companyName: text("companyName", { length: 255 }).notNull(),
+  cnpj: text("cnpj", { length: 18 }).notNull().unique(),
+  contactEmail: text("contactEmail", { length: 320 }).notNull(),
+  contactPhone: text("contactPhone", { length: 20 }),
+  planId: integer("planId").references(() => plans.id),
+  approved: integer("approved", { mode: "boolean" }).default(false).notNull(),
+  createdAt: integer("createdAt", { mode: "timestamp_ms" }).notNull().$defaultFn(() => Date.now()),
+  updatedAt: integer("updatedAt", { mode: "timestamp_ms" }).notNull().$defaultFn(() => Date.now()),
 });
 
 export type Company = typeof companies.$inferSelect;
@@ -42,16 +42,16 @@ export type InsertCompany = typeof companies.$inferInsert;
 /**
  * Employees table - stores employee information
  */
-export const employees = mysqlTable("employees", {
-  id: int("id").autoincrement().primaryKey(),
-  userId: int("userId").notNull().references(() => users.id),
-  companyId: int("companyId").notNull().references(() => companies.id),
-  employeeName: varchar("employeeName", { length: 255 }).notNull(),
-  employeeEmail: varchar("employeeEmail", { length: 320 }).notNull(),
-  department: varchar("department", { length: 100 }),
-  position: varchar("position", { length: 100 }),
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+export const employees = sqliteTable("employees", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  userId: integer("userId").notNull().references(() => users.id),
+  companyId: integer("companyId").notNull().references(() => companies.id),
+  employeeName: text("employeeName", { length: 255 }).notNull(),
+  employeeEmail: text("employeeEmail", { length: 320 }).notNull(),
+  department: text("department", { length: 100 }),
+  position: text("position", { length: 100 }),
+  createdAt: integer("createdAt", { mode: "timestamp_ms" }).notNull().$defaultFn(() => Date.now()),
+  updatedAt: integer("updatedAt", { mode: "timestamp_ms" }).notNull().$defaultFn(() => Date.now()),
 });
 
 export type Employee = typeof employees.$inferSelect;
@@ -60,73 +60,73 @@ export type InsertEmployee = typeof employees.$inferInsert;
 /**
  * Health Professionals table - stores health professional information
  */
-export const healthProfessionals = mysqlTable("healthProfessionals", {
-  id: int("id").autoincrement().primaryKey(),
-  userId: int("userId").notNull().references(() => users.id),
-  professionalName: varchar("professionalName", { length: 255 }).notNull(),
-  specialty: varchar("specialty", { length: 100 }).notNull(),
-  registrationNumber: varchar("registrationNumber", { length: 50 }).notNull().unique(),
-  contactEmail: varchar("contactEmail", { length: 320 }).notNull(),
-  contactPhone: varchar("contactPhone", { length: 20 }),
+export const healthProfessionals = sqliteTable("healthProfessionals", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  userId: integer("userId").notNull().references(() => users.id),
+  professionalName: text("professionalName", { length: 255 }).notNull(),
+  specialty: text("specialty", { length: 100 }).notNull(),
+  registrationNumber: text("registrationNumber", { length: 50 }).notNull().unique(),
+  contactEmail: text("contactEmail", { length: 320 }).notNull(),
+  contactPhone: text("contactPhone", { length: 20 }),
   bio: text("bio"),
-  approved: boolean("approved").default(false).notNull(),
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+  approved: integer("approved", { mode: "boolean" }).default(false).notNull(),
+  createdAt: integer("createdAt", { mode: "timestamp_ms" }).notNull().$defaultFn(() => Date.now()),
+  updatedAt: integer("updatedAt", { mode: "timestamp_ms" }).notNull().$defaultFn(() => Date.now()),
 });
 
 export type HealthProfessional = typeof healthProfessionals.$inferSelect;
 export type InsertHealthProfessional = typeof healthProfessionals.$inferInsert;
 
 /**
- * Survey Responses table - stores employee wellness survey responses
+ * Survey Responses table - stores employee survey responses
  */
-export const surveyResponses = mysqlTable("surveyResponses", {
-  id: int("id").autoincrement().primaryKey(),
-  employeeId: int("employeeId").notNull().references(() => employees.id),
-  responseDate: date("responseDate").notNull(),
-  moodLevel: int("moodLevel").notNull(), // 1-5 scale
-  stressLevel: int("stressLevel").notNull(), // 1-5 scale
-  fatigueLevel: int("fatigueLevel").notNull(), // 1-5 scale
-  workSatisfaction: int("workSatisfaction").notNull(), // 1-5 scale
+export const surveyResponses = sqliteTable("surveyResponses", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  employeeId: integer("employeeId").notNull().references(() => employees.id),
+  responseDate: integer("responseDate", { mode: "timestamp_ms" }).notNull(),
+  moodLevel: integer("moodLevel").notNull(),
+  stressLevel: integer("stressLevel").notNull(),
+  fatigueLevel: integer("fatigueLevel").notNull(),
+  workSatisfaction: integer("workSatisfaction").notNull(),
   observations: text("observations"),
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  createdAt: integer("createdAt", { mode: "timestamp_ms" }).notNull().$defaultFn(() => Date.now()),
 });
 
 export type SurveyResponse = typeof surveyResponses.$inferSelect;
 export type InsertSurveyResponse = typeof surveyResponses.$inferInsert;
 
 /**
- * Educational Contents table - stores educational materials managed by admin
+ * Educational Contents table - stores educational materials
  */
-export const educationalContents = mysqlTable("educationalContents", {
-  id: int("id").autoincrement().primaryKey(),
-  title: varchar("title", { length: 255 }).notNull(),
-  contentType: mysqlEnum("contentType", ["article", "video", "podcast", "infographic", "guide"]).notNull(),
+export const educationalContents = sqliteTable("educationalContents", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  title: text("title", { length: 255 }).notNull(),
+  contentType: text("contentType").notNull(),
   description: text("description").notNull(),
-  contentUrl: varchar("contentUrl", { length: 500 }),
-  thumbnailUrl: varchar("thumbnailUrl", { length: 500 }),
-  published: boolean("published").default(false).notNull(),
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+  contentUrl: text("contentUrl", { length: 500 }),
+  thumbnailUrl: text("thumbnailUrl", { length: 500 }),
+  published: integer("published", { mode: "boolean" }).default(false).notNull(),
+  createdAt: integer("createdAt", { mode: "timestamp_ms" }).notNull().$defaultFn(() => Date.now()),
+  updatedAt: integer("updatedAt", { mode: "timestamp_ms" }).notNull().$defaultFn(() => Date.now()),
 });
 
 export type EducationalContent = typeof educationalContents.$inferSelect;
 export type InsertEducationalContent = typeof educationalContents.$inferInsert;
 
 /**
- * Plans table - stores subscription plans for companies
+ * Plans table - stores subscription plans
  */
-export const plans = mysqlTable("plans", {
-  id: int("id").autoincrement().primaryKey(),
-  planName: varchar("planName", { length: 100 }).notNull(),
-  planType: mysqlEnum("planType", ["basic", "professional", "enterprise"]).notNull(),
-  price: int("price").notNull(), // Price in cents
-  billingPeriod: mysqlEnum("billingPeriod", ["monthly", "quarterly", "yearly"]).notNull(),
-  maxEmployees: int("maxEmployees"),
-  features: text("features"), // JSON string with plan features
-  active: boolean("active").default(true).notNull(),
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+export const plans = sqliteTable("plans", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  planName: text("planName", { length: 100 }).notNull(),
+  planType: text("planType").notNull(),
+  price: integer("price").notNull(),
+  billingPeriod: text("billingPeriod").notNull(),
+  maxEmployees: integer("maxEmployees"),
+  features: text("features"),
+  active: integer("active", { mode: "boolean" }).default(true).notNull(),
+  createdAt: integer("createdAt", { mode: "timestamp_ms" }).notNull().$defaultFn(() => Date.now()),
+  updatedAt: integer("updatedAt", { mode: "timestamp_ms" }).notNull().$defaultFn(() => Date.now()),
 });
 
 export type Plan = typeof plans.$inferSelect;
