@@ -42,5 +42,5 @@
 - [x] Testar fluxo completo de cadastro e login
 - [x] Testar submissão de questionários
 - [x] Testar visualização de relatórios
-- [ ] Criar checkpoint para deploy
+- [x] Criar checkpoint para deploy
 - [ ] Preparar configuração para Cloudflare D1 e R2
