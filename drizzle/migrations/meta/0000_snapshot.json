@@ -1,8 +1,8 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "d2b5d82b-078a-4519-a718-47cb598e86b2",
-  "prevId": "9200fd0d-c7e1-4145-b7f4-4404501f4300",
+  "id": "61b38385-bef5-4dde-ab7d-79925b6d0e53",
+  "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "companies": {
       "name": "companies",
