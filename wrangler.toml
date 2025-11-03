@@ -6,7 +6,7 @@ pages_build_output_dir = "dist"
 [[d1_databases]]
 binding = "DB"
 database_name = "saude-corporativa-db"
-database_id = "YOUR_DATABASE_ID_HERE"
+database_id = "e4c60c74-d3b4-4253-afa0-33ac3242d5da"
 
 # Configuração do R2 Storage
 [[r2_buckets]]
