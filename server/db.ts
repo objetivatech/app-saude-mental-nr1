@@ -368,3 +368,25 @@ export async function getPlanById(id: number) {
   const result = await db.select().from(plans).where(eq(plans.id, id)).limit(1);
   return result.length > 0 ? result[0] : undefined;
 }
+
+// ============= USER MANAGEMENT OPERATIONS =============
+
+export async function getAllUsers() {
+  const db = await getDb();
+  if (!db) return [];
+
+  return await db.select().from(users).orderBy(desc(users.createdAt));
+}
+
+export async function deleteUser(userId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  // Delete related records first
+  await db.delete(companies).where(eq(companies.userId, userId));
+  await db.delete(employees).where(eq(employees.userId, userId));
+  await db.delete(healthProfessionals).where(eq(healthProfessionals.userId, userId));
+  
+  // Delete user
+  await db.delete(users).where(eq(users.id, userId));
+}

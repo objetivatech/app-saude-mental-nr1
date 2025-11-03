@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { trpc } from "@/lib/trpc";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle, Building2, Stethoscope } from "lucide-react";
+import { CheckCircle, Building2, Stethoscope, Users } from "lucide-react";
 import { toast } from "sonner";
 
 export default function AdminDashboard() {
@@ -37,11 +37,17 @@ export default function AdminDashboard() {
   return (
     <DashboardLayout>
       <div className="space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold">Painel Administrativo</h1>
-          <p className="text-muted-foreground">
-            Gerencie aprovações e monitore a plataforma
-          </p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold">Painel Administrativo</h1>
+            <p className="text-muted-foreground">
+              Gerencie aprovações e monitore a plataforma
+            </p>
+          </div>
+          <Button onClick={() => window.location.href = '/admin/users'}>
+            <Users className="w-4 h-4 mr-2" />
+            Gerenciar Usuários
+          </Button>
         </div>
 
         {/* Stats Cards */}

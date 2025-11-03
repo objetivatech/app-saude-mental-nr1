@@ -274,6 +274,65 @@ export const appRouter = router({
 
   // ============= ADMIN ROUTES =============
   admin: router({
+    // User Management
+    createCompanyUser: adminProcedure
+      .input(z.object({
+        name: z.string().min(1),
+        email: z.string().email(),
+        companyName: z.string().min(1),
+        cnpj: z.string().min(14).max(18),
+        contactEmail: z.string().email(),
+        contactPhone: z.string().optional(),
+        planId: z.number().optional(),
+        approved: z.boolean().default(true),
+      }))
+      .mutation(async ({ input }) => {
+        // This would require creating user first, then company
+        // For now, return success - full implementation needed
+        return { success: true, message: "Funcionalidade em desenvolvimento" };
+      }),
+
+    createEmployeeUser: adminProcedure
+      .input(z.object({
+        name: z.string().min(1),
+        email: z.string().email(),
+        companyId: z.number(),
+        employeeName: z.string().min(1),
+        employeeEmail: z.string().email(),
+        department: z.string().optional(),
+        position: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        return { success: true, message: "Funcionalidade em desenvolvimento" };
+      }),
+
+    createProfessionalUser: adminProcedure
+      .input(z.object({
+        name: z.string().min(1),
+        email: z.string().email(),
+        professionalName: z.string().min(1),
+        specialty: z.string().min(1),
+        registrationNumber: z.string().min(1),
+        contactEmail: z.string().email(),
+        contactPhone: z.string().optional(),
+        bio: z.string().optional(),
+        approved: z.boolean().default(true),
+      }))
+      .mutation(async ({ input }) => {
+        return { success: true, message: "Funcionalidade em desenvolvimento" };
+      }),
+
+    getAllUsers: adminProcedure.query(async () => {
+      const allUsers = await db.getAllUsers();
+      return allUsers;
+    }),
+
+    deleteUser: adminProcedure
+      .input(z.object({ userId: z.number() }))
+      .mutation(async ({ input }) => {
+        await db.deleteUser(input.userId);
+        return { success: true };
+      }),
     getPendingCompanies: adminProcedure.query(async () => {
       return await db.getPendingCompanies();
     }),

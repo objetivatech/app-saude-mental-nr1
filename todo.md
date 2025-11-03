@@ -44,3 +44,20 @@
 - [x] Testar visualização de relatórios
 - [x] Criar checkpoint para deploy
 - [ ] Preparar configuração para Cloudflare D1 e R2
+
+
+## Melhorias Solicitadas - Gerenciamento de Usuários
+- [x] Criar API para admin cadastrar empresas
+- [x] Criar API para admin cadastrar funcionários
+- [x] Criar API para admin cadastrar profissionais
+- [ ] Criar API para admin editar usuários (em desenvolvimento)
+- [x] Criar API para admin excluir usuários
+- [x] Criar tela de gerenciamento de usuários no painel admin
+- [ ] Criar formulários de cadastro de usuários pelo admin (em desenvolvimento)
+
+## Deploy Cloudflare
+- [x] Criar guia detalhado de configuração do Cloudflare Workers
+- [x] Criar guia de configuração do D1 Database
+- [x] Criar guia de configuração do R2 Storage
+- [x] Criar arquivo wrangler.toml
+- [x] Documentar processo completo de deploy

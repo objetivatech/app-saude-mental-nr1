@@ -13,6 +13,7 @@ import EmployeeDashboard from "./pages/employee/EmployeeDashboard";
 import RegisterProfessional from "./pages/professional/RegisterProfessional";
 import ProfessionalsList from "./pages/professional/ProfessionalsList";
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import UserManagement from "./pages/admin/UserManagement";
 
 function Router() {
   return (
@@ -35,6 +36,7 @@ function Router() {
       
       {/* Admin Routes */}
       <Route path={"/admin/dashboard"} component={AdminDashboard} />
+      <Route path={"/admin/users"} component={UserManagement} />
       
       <Route path={"/404"} component={NotFound} />
       <Route component={NotFound} />
